@@ -23,11 +23,13 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        //finds the relevant fields inside of the activity layout and initializes private variables
         usernameInput = findViewById(R.id.etUserName);
         passwordInput = findViewById(R.id.etPassword);
         emailInput = findViewById(R.id.etEmail);
         signupBtn = findViewById(R.id.btSignup);
 
+        //sets a listener for the signup button and captures the content entered by the user
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,10 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void done(com.parse.ParseException e) {
                 if (e == null) {
-                    Log.d("LoginActivity", "Login successful!");
-                    final Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    openHome();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
@@ -69,5 +68,13 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void openHome(){
+        //opens the homeactivity for the user after signup is completed
+        final Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
