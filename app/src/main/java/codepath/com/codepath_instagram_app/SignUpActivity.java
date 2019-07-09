@@ -16,6 +16,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText emailInput;
+    private EditText handleInput;
     private Button signupBtn;
 
     @Override
@@ -27,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.etUserName);
         passwordInput = findViewById(R.id.etPassword);
         emailInput = findViewById(R.id.etEmail);
+        emailInput = findViewById(R.id.etHandle);
         signupBtn = findViewById(R.id.btSignup);
 
         //sets a listener for the signup button and captures the content entered by the user
@@ -36,7 +38,8 @@ public class SignUpActivity extends AppCompatActivity {
                 final String username = usernameInput.getText().toString();
                 final String email = emailInput.getText().toString();
                 final String password = passwordInput.getText().toString();
-                signup(username, email, password);
+                final String handle = handleInput.getText().toString();
+                signup(username, email, password, handle);
 
 
             }
@@ -46,12 +49,13 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-    private void signup(String username, String email, String password){
+    private void signup(String username, String email, String password, String handle){
         ParseUser user = new ParseUser();
         // Set core properties
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
+        user.put("handle", handle);
 
         // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {

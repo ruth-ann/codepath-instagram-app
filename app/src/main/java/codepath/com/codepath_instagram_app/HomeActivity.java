@@ -6,11 +6,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import java.util.List;
+
+import codepath.com.codepath_instagram_app.model.Post;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -53,6 +60,29 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
+
+        final Post.Query postsQuery = new Post.Query();
+        //uses methods defined in Post model to get the top 20 posts
+        postsQuery.getTop().withUser();
+
+
+        //gets the posts stored in the database on a background thread
+        postsQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                    if (e == null){
+                        for (int i = 0; i < objects.size(); i++) {
+                            Log.d("HomeActivity", "Post[" + i + "]="
+                                    + objects.get(i).getDescription()
+                                    + "\nusername = " + objects.get(i).getUser().getUsername()
+                            );
+
+                        }
+                    }else{
+                        e.printStackTrace();
+                    }
+            }
+        });
 
 
     }
