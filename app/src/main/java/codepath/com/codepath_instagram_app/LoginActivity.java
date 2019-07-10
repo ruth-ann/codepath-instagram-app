@@ -12,7 +12,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         //checks whether there is an existing user session
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -83,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void openHome(){
         //opens the homeactivity for the user  after credentials are checked
-        final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void openSignUp(){
         //takes the user to the signup page
-        final Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+        final Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
 }
