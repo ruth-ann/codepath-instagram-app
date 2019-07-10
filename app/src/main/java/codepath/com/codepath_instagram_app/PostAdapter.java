@@ -1,6 +1,7 @@
 package codepath.com.codepath_instagram_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import codepath.com.codepath_instagram_app.model.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    private List<Post> mPosts;
-    private static Context context;
+    private static List<Post> mPosts;
+    private  Context context;
 
     //pass in the Posts array in the constructor
     public PostAdapter (List<Post> posts, Context context){
@@ -52,6 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     }
 
+
     //gets the number of items
     @Override
     public int getItemCount() {
@@ -60,7 +64,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //create ViewHolder class
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         public ImageView imageIv;
        // public ImageView profilePicIv;
         public TextView usernameTv;
@@ -69,22 +73,61 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ViewHolder (View itemView){
             super(itemView);
 
-            //perform findViewById lookups in the xml file
+            //perform findViewById lookups by id in the xml file
             imageIv = (ImageView)  itemView.findViewById(R.id.ivImage);
             //profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
             usernameTv = (TextView) itemView.findViewById(R.id.tvHandle);
-            descriptionTv = (TextView) itemView.findViewById(R.id.tvDescription);
+            descriptionTv = (TextView) itemView.findViewById(R.id.etDescription);
+            //itemView's onClickListener
+            itemView.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            //gets item position
+            int position = getAdapterPosition();
+            //make sure the position is valid (that it exists in the view)
+            if (position != RecyclerView.NO_POSITION){
+                //get the post at the position (will not work if the class is static)
+                Post post = mPosts.get(position);
+                //create intent for the new activity
+                Intent intent = new Intent(context, PostDetailsActivity.class);
+                //serialize the movie using parceler, uses the short name of the movie as a key
+                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                // show the activity
+                context.startActivity(intent);
+            }
 
         }
 
         public void bind(Post post) {
 
             descriptionTv.setText(post.getDescription());
-            usernameTv.setText(post.getUser().getUsername()); //TODO figure out how to get a user
+            usernameTv.setText(post.getUser().getUsername());
             ParseFile image = post.getImage();
             if (image != null){
                 Glide.with(context).load(image.getUrl()).into(imageIv);
             }
         }
+
+
+
+    }
+
+
+
+    // Clean all elements of the recycler
+    public void clear() {
+        mPosts.clear();
+        notifyDataSetChanged();
+    }
+
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Post> list) {
+        mPosts.addAll(list);
+        notifyDataSetChanged();
     }
 }

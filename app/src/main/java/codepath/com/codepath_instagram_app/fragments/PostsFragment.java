@@ -2,6 +2,7 @@ package codepath.com.codepath_instagram_app.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +22,15 @@ import codepath.com.codepath_instagram_app.model.Post;
 
 public class PostsFragment extends Fragment {
 
+    protected SwipeRefreshLayout swipeContainer;
+
+
     public static final String TAG = "PostFragment";
     private RecyclerView postsRv;
     protected ArrayList<Post> mPosts;
     protected PostAdapter postAdapter;
+
+
 
     //onCreateView to inflate the view
     @Override
@@ -45,6 +51,27 @@ public class PostsFragment extends Fragment {
         postsRv.setLayoutManager(new LinearLayoutManager(getContext()));
         //set the adapter
         postsRv.setAdapter(postAdapter);
+
+
+
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         queryPosts();
     }
 
@@ -62,14 +89,19 @@ public class PostsFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "Error with query");
                     e.printStackTrace();
+                    swipeContainer.setRefreshing(false);
                     return;
                 }
 
                 mPosts.addAll(posts);
                 postAdapter.notifyDataSetChanged();
-
+                swipeContainer.setRefreshing(false);
 
             }
         });
     }
+
+
+
+
 }

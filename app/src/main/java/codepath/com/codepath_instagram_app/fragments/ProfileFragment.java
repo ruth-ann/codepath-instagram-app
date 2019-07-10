@@ -29,6 +29,7 @@ public class ProfileFragment extends PostsFragment {
 
                 mPosts.addAll(posts);
                 postAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
 
 
             }
