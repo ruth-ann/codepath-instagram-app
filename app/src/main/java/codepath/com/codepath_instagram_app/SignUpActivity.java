@@ -28,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.etUserName);
         passwordInput = findViewById(R.id.etPassword);
         emailInput = findViewById(R.id.etEmail);
-        emailInput = findViewById(R.id.etHandle);
+        handleInput = findViewById(R.id.etHandle);
         signupBtn = findViewById(R.id.btSignup);
 
         //sets a listener for the signup button and captures the content entered by the user
@@ -55,6 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
+
         user.put("handle", handle);
 
         // Invoke signUpInBackground
@@ -67,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
 
-                    Log.e("LoginActivity", "Login failure.");
+                    Log.e("SignUpActivity", "Signup failure.");
                     e.printStackTrace();
                 }
             }
