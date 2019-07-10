@@ -14,6 +14,7 @@ public class Post extends ParseObject {
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_IMAGE = "image";
     private static final String KEY_USER = "user";
+    private static final String KEY_CREATED_AT = "createdAt";
 
     //accessors and mutators for our private strings
     //description
@@ -52,14 +53,29 @@ public class Post extends ParseObject {
         }
 
         //gets the top 20 posts
-        public Query getTop(){
-            setLimit(20);
+        public Query getTop(int limit){
+            setLimit(limit);
             return this; //builder pattern allows users to chain methods
         }
 
         //the post unpacks the associated user
         public Query withUser(){
             include("user");
+            return this;
+        }
+
+        public Query sortDescending(){
+            addDescendingOrder(KEY_CREATED_AT);
+            return this;
+        }
+
+        public Query sortAscending(){
+            addAscendingOrder(KEY_CREATED_AT);
+            return this;
+        }
+
+        public Query getUserPosts(){
+            whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
             return this;
         }
 

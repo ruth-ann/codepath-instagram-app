@@ -13,8 +13,6 @@ import java.util.List;
 
 import codepath.com.codepath_instagram_app.model.Post;
 
-import static java.security.AccessController.getContext;
-
 
 public class TimelineActivity extends AppCompatActivity {
 
@@ -52,7 +50,7 @@ public class TimelineActivity extends AppCompatActivity {
     private void loadTopPosts(){
         final Post.Query postsQuery = new Post.Query();
         //uses methods defined in Post model to get the top 20 posts
-        postsQuery.getTop().withUser();
+        postsQuery.getTop(20).withUser().sortDescending();
 
 
         //gets the posts stored in the database on a background thread

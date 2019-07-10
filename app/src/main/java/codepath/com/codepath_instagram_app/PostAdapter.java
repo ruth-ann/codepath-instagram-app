@@ -1,7 +1,6 @@
 package codepath.com.codepath_instagram_app;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private List<Post> mPosts;
     private static Context context;
+
     //pass in the Posts array in the constructor
     public PostAdapter (List<Post> posts, Context context){
         this.mPosts = posts;
@@ -28,11 +28,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //for each row, inflate the layout and cache references into the ViewHolder
 
-    @NonNull
+
     //called when new rows are created
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View postView = inflater.inflate(R.layout.item_post, parent, false);
@@ -43,7 +42,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
 
     //bind the values based on the position of the element
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //get the data according to position
@@ -64,7 +62,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageIv;
-        public ImageView profilePicIv;
+       // public ImageView profilePicIv;
         public TextView usernameTv;
         public TextView descriptionTv;
 
@@ -73,8 +71,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             //perform findViewById lookups in the xml file
             imageIv = (ImageView)  itemView.findViewById(R.id.ivImage);
-            profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
-            usernameTv = (TextView) itemView.findViewById(R.id.tvUsername);
+            //profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
+            usernameTv = (TextView) itemView.findViewById(R.id.tvHandle);
             descriptionTv = (TextView) itemView.findViewById(R.id.tvDescription);
 
         }

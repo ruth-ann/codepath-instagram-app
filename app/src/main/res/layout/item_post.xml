@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/ivImage"
-        android:layout_width="414dp"
-        android:layout_height="359dp"
-        android:layout_marginTop="92dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/tvDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvHandle"
         app:srcCompat="@android:color/black" />
 
-    <ImageView
+    <!-- <ImageView
         android:id="@+id/ivProfilePic"
         android:layout_width="78dp"
         android:layout_height="68dp"
@@ -33,21 +34,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.323"
-        app:srcCompat="@android:color/black" />
+        app:srcCompat="@android:color/black" />  -->
 
     <TextView
-        android:id="@+id/tvUsername"
+        android:id="@+id/tvHandle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="TextView"
+        android:text="Handle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
         app:layout_constraintBottom_toTopOf="@+id/ivImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivProfilePic"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -58,8 +59,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:layout_marginBottom="16dp"
+        android:text="Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
