@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
 
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etDescription"
+        app:layout_constraintBottom_toTopOf="@+id/ivLike"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHandle"
+        app:layout_constraintTop_toBottomOf="@+id/etHandle"
         app:srcCompat="@android:color/black" />
 
     <!-- <ImageView
@@ -37,7 +38,7 @@
         app:srcCompat="@android:color/black" />  -->
 
     <TextView
-        android:id="@+id/tvHandle"
+        android:id="@+id/etHandle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -47,10 +48,11 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:text="Handle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/ivImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,15 +60,90 @@
         android:id="@+id/etDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:text="Description"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/etDescriptionHandle"
+        app:layout_constraintTop_toBottomOf="@+id/etDescriptionHandle" />
+
+    <ImageView
+        android:id="@+id/ivLike"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toStartOf="@+id/ivComment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ivImage"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage"
+        app:srcCompat="@drawable/ufi_heart" />
+
+    <ImageView
+        android:id="@+id/ivComment"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toStartOf="@+id/ivShare"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivLike"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ufi_comment" />
+
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toStartOf="@+id/ivSave"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivComment"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/direct" />
+
+    <ImageView
+        android:id="@+id/ivSave"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivShare"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ufi_save" />
+
+    <TextView
+        android:id="@+id/etDescriptionHandle"
+        android:layout_width="49dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Handle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/etDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivImage" />
+        app:layout_constraintTop_toBottomOf="@+id/ivLike" />
 </android.support.constraint.ConstraintLayout>

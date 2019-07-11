@@ -69,6 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
        // public ImageView profilePicIv;
         public TextView usernameTv;
         public TextView descriptionTv;
+        public TextView descUsernameTv;
 
         public ViewHolder (View itemView){
             super(itemView);
@@ -76,8 +77,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             //perform findViewById lookups by id in the xml file
             imageIv = (ImageView)  itemView.findViewById(R.id.ivImage);
             //profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
-            usernameTv = (TextView) itemView.findViewById(R.id.tvHandle);
+            usernameTv = (TextView) itemView.findViewById(R.id.etHandle);
             descriptionTv = (TextView) itemView.findViewById(R.id.etDescription);
+            descUsernameTv = (TextView) itemView.findViewById(R.id.etDescriptionHandle); //TODO fix et versus tv
             //itemView's onClickListener
             itemView.setOnClickListener(this);
 
@@ -106,6 +108,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             descriptionTv.setText(post.getDescription());
             usernameTv.setText(post.getUser().getUsername());
+            descUsernameTv.setText(post.getUser().getUsername());
             ParseFile image = post.getImage();
             if (image != null){
                 Glide.with(context).load(image.getUrl()).into(imageIv);
