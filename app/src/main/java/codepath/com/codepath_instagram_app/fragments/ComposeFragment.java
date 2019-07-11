@@ -27,7 +27,6 @@ import java.io.File;
 
 import codepath.com.codepath_instagram_app.LoginActivity;
 import codepath.com.codepath_instagram_app.R;
-import codepath.com.codepath_instagram_app.TimelineActivity;
 import codepath.com.codepath_instagram_app.model.Post;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,7 +43,6 @@ public class ComposeFragment extends Fragment {
     private EditText descriptionInput;
     private Button captureImageBtn;
     private ImageView postImageIv;
-    private Button refreshBtn;
     private Button createBtn;
     private Button logoutBtn;
 
@@ -68,7 +66,6 @@ public class ComposeFragment extends Fragment {
         descriptionInput = view.findViewById(R.id.etDescription);
         postImageIv = view.findViewById(R.id.ivPostImage);
         captureImageBtn = view.findViewById(R.id.btTakePhoto);
-        refreshBtn = view.findViewById(R.id.btRefresh);
         createBtn = view.findViewById(R.id.btCreate);
 
         //Runs the function to launch the camera after the capture button is pressed
@@ -80,18 +77,6 @@ public class ComposeFragment extends Fragment {
             }
         });
 
-
-        //Finds the create post button and sets a listener
-
-        refreshBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent timelineIntent =  new Intent(getContext(), TimelineActivity.class);
-                startActivity(timelineIntent);
-                // loadTopPosts();
-            }
-
-        });
 
         //Finds the create post button and sets a listener
 
