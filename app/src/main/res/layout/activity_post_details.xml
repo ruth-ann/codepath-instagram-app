@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/etUsername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="265dp"
+        android:layout_height="21dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="48dp"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ivImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -67,5 +67,20 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/etDescription"
         app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ivImage"
+        app:layout_constraintEnd_toStartOf="@+id/etUsername"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </android.support.constraint.ConstraintLayout>

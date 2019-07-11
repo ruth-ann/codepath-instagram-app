@@ -21,10 +21,10 @@ import codepath.com.codepath_instagram_app.model.Post;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private static List<Post> mPosts;
-    private  Context context;
+    private Context context;
 
     //pass in the Posts array in the constructor
-    public PostAdapter (List<Post> posts, Context context){
+    public PostAdapter(List<Post> posts, Context context) {
         this.mPosts = posts;
         this.context = context;
     }
@@ -64,19 +64,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //create ViewHolder class
 
-    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageIv;
-       // public ImageView profilePicIv;
+        public ImageView profilePicIv;
         public TextView usernameTv;
         public TextView descriptionTv;
         public TextView descUsernameTv;
 
-        public ViewHolder (View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
 
             //perform findViewById lookups by id in the xml file
-            imageIv = (ImageView)  itemView.findViewById(R.id.ivImage);
-            //profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
+            imageIv = (ImageView) itemView.findViewById(R.id.ivImage);
+            profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
             usernameTv = (TextView) itemView.findViewById(R.id.etHandle);
             descriptionTv = (TextView) itemView.findViewById(R.id.etDescription);
             descUsernameTv = (TextView) itemView.findViewById(R.id.etDescriptionHandle); //TODO fix et versus tv
@@ -91,7 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             //gets item position
             int position = getAdapterPosition();
             //make sure the position is valid (that it exists in the view)
-            if (position != RecyclerView.NO_POSITION){
+            if (position != RecyclerView.NO_POSITION) {
                 //get the post at the position (will not work if the class is static)
                 Post post = mPosts.get(position);
                 //create intent for the new activity
@@ -110,15 +110,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             usernameTv.setText(post.getUser().getUsername());
             descUsernameTv.setText(post.getUser().getUsername());
             ParseFile image = post.getImage();
-            if (image != null){
-                Glide.with(context).load(image.getUrl()).into(imageIv);
+            if (image != null) {
+                Glide.with(context).load(image.getUrl())/*.transform(new CircleTransform(context))*/.into(imageIv);
             }
+            ParseFile profilePhoto = post.getUser().getParseFile("profilePicture");
+            if (profilePhoto != null) {
+                Glide.with(context).load(profilePhoto.getUrl()).into(profilePicIv);
+            }
+
         }
 
 
-
     }
-
 
 
     // Clean all elements of the recycler
@@ -133,4 +136,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         mPosts.addAll(list);
         notifyDataSetChanged();
     }
+
+
+    //stack overflow code
+  /*  public static class CircleTransform extends BitmapTransformation {
+        public CircleTransform(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            return circleCrop(pool, toTransform);
+        }
+
+        private static Bitmap circleCrop(BitmapPool pool, Bitmap source) {
+            if (source == null) return null;
+
+            int size = Math.min(source.getWidth(), source.getHeight());
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+
+            Bitmap squared = Bitmap.createBitmap(source, x, y, size, size);
+
+            Bitmap result = pool.get(size, size, Bitmap.Config.ARGB_8888);
+            if (result == null) {
+                result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(result);
+            Paint paint = new Paint();
+            paint.setShader(new BitmapShader(squared, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
+            paint.setAntiAlias(true);
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+            return result;
+        }
+
+        @Override
+        public String getId() {
+            return getClass().getName();
+        }
+
+    }*/
 }
