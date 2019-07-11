@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Instagram</string>
-    <string name="title_activity_home">Timeline</string>
+    <string name="title_activity_home"></string>
 </resources>
