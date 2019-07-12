@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -24,13 +25,11 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        //finds the relevant fields inside of the activity layout and initializes private variables
-        usernameInput = findViewById(R.id.etUserName);
-        passwordInput = findViewById(R.id.etPassword);
-        emailInput = findViewById(R.id.etEmail);
-        handleInput = findViewById(R.id.etHandle);
-        signupBtn = findViewById(R.id.btSignup);
+        findAllViews();
+        setSignUpListener();
+    }
 
+    private void setSignUpListener() {
         //sets a listener for the signup button and captures the content entered by the user
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,13 +39,19 @@ public class SignUpActivity extends AppCompatActivity {
                 final String password = passwordInput.getText().toString();
                 final String handle = handleInput.getText().toString();
                 signup(username, email, password, handle);
-
-
             }
         });
     }
 
+    private void findAllViews() {
+        //finds the relevant fields inside of the activity layout and initializes private variables
+        usernameInput = findViewById(R.id.etUserName);
+        passwordInput = findViewById(R.id.etPassword);
+        emailInput = findViewById(R.id.etEmail);
+        handleInput = findViewById(R.id.etHandle);
+        signupBtn = findViewById(R.id.btSignup);
 
+    }
 
 
     private void signup(String username, String email, String password, String handle){
@@ -55,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-
         user.put("handle", handle);
 
         // Invoke signUpInBackground
@@ -67,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-
+                    Toast.makeText(SignUpActivity.this, "Signup failure", Toast.LENGTH_SHORT).show();
                     Log.e("SignUpActivity", "Signup failure.");
                     e.printStackTrace();
                 }
