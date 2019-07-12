@@ -24,14 +24,13 @@ import java.io.File;
 public class ProfilePictureActivity extends AppCompatActivity {
 
 
-    Button profilePictureBtn;
+    Button takePhotoBtn;
     Button uploadProfilePicBtn;
     ImageView profilePictureIv;
 
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
     private File photoFile;
-
     public final String TAG = "ProfilePictureActivity";
 
     @Override
@@ -39,27 +38,16 @@ public class ProfilePictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_profile_picture);
 
+        findAllViews();
+        setTakePhotoListener();
+        setUploadListener();
+    }
 
-        profilePictureBtn = findViewById(R.id.btTakePhoto);
-        profilePictureBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchCamera();
-            }
-        });
-
-
-
-        uploadProfilePicBtn = findViewById(R.id.btUploadProfilePic);
-        profilePictureIv = findViewById(R.id.ivProfilePicture);
-
+    private void setUploadListener() {
         uploadProfilePicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ParseUser user = ParseUser.getCurrentUser();
-
-                //\    final File file = new File(imagePath);
-                //  final  ParseFile parseFile = new ParseFile(file);
 
                 //Ensures that a photo file is present
                 if (photoFile == null || profilePictureIv.getDrawable() == null){
@@ -71,10 +59,21 @@ public class ProfilePictureActivity extends AppCompatActivity {
             }
 
         });
+    }
 
+    private void setTakePhotoListener() {
+        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCamera();
+            }
+        });
+    }
 
-
-
+    private void findAllViews() {
+        takePhotoBtn = findViewById(R.id.btTakePhoto);
+        uploadProfilePicBtn = findViewById(R.id.btUploadProfilePic);
+        profilePictureIv = findViewById(R.id.ivProfilePicture);
     }
 
 
@@ -97,8 +96,6 @@ public class ProfilePictureActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_ig_timeline, menu);
-
-
         return true;
 
     }
@@ -141,7 +138,6 @@ public class ProfilePictureActivity extends AppCompatActivity {
 
         // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
         return file;
     }
 
