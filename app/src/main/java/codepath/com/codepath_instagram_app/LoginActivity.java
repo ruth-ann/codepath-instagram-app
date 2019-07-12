@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -27,40 +28,48 @@ public class LoginActivity extends AppCompatActivity {
         //checks whether there is an existing user session
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            currentUser.getSessionToken(); //TODO fix
+            currentUser.getSessionToken();
             openHome();
         }else {
-
-            //finds the relevant fields inside of the activity layout and initializes private variables
-            usernameInput = findViewById(R.id.etUserName);
-            passwordInput = findViewById(R.id.etPassword);
-            loginBtn = findViewById(R.id.btLogin);
-            signupBtn = findViewById(R.id.btSignup);
-
-            //sets a listener for the login button and captures the content entered by the user
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final String username = usernameInput.getText().toString();
-                    final String password = passwordInput.getText().toString();
-
-
-                    login(username, password);
-
-                }
-
-            });
-
-            signupBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openSignUp();
-                }
-
-            });
-
+            //logic for login flow
+            findAllViews();
+            setLoginListener();
+            setSignUpListener();
         }
     }
+
+    private void setSignUpListener() {
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSignUp();
+            }
+
+        });
+    }
+
+    private void setLoginListener() {
+        //sets a listener for the login button and captures the content entered by the user
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = usernameInput.getText().toString();
+                final String password = passwordInput.getText().toString();
+                login(username, password);
+
+            }
+        });
+    }
+
+
+    private void findAllViews() {
+        //finds the relevant fields inside of the activity layout and initializes private variables
+        usernameInput = findViewById(R.id.etUserName);
+        passwordInput = findViewById(R.id.etPassword);
+        loginBtn = findViewById(R.id.btLogin);
+        signupBtn = findViewById(R.id.btSignup);
+    }
+
 
     private void login(String username, String password){
         //authenticates the user in a background thread
@@ -75,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Login didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                     Log.e("LoginActivity", "Login failure.");
+                    Toast.makeText(LoginActivity.this, "Login failure.", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }

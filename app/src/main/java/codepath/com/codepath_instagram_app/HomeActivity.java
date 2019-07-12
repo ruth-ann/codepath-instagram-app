@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         //selected by the user
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-
         //sets a listener for each of the icons in the bottom navigation view
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
