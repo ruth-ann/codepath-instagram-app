@@ -146,6 +146,7 @@ public class ProfilePictureActivity extends AppCompatActivity {
     }
 
 
+
     private void uploadPicture(ParseUser user, File photoFile) {
         user.put("profilePicture", new ParseFile(photoFile));
         user.saveInBackground();

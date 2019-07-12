@@ -40,6 +40,7 @@ public class ComposeFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     private File photoFile;
 
+    //variables linked to xml file
     private EditText descriptionInput;
     private Button captureImageBtn;
     private ImageView postImageIv;
@@ -58,7 +59,6 @@ public class ComposeFragment extends Fragment {
 
     // This event is triggered soon after onCreateView().
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
@@ -68,53 +68,62 @@ public class ComposeFragment extends Fragment {
         captureImageBtn = view.findViewById(R.id.btTakePhoto);
         createBtn = view.findViewById(R.id.btUploadProfilePic);
 
-        //Runs the function to launch the camera after the capture button is pressed
+        //sets listeners for each of the relevant buttons
+        setCaptureButtonListener(view);
+        setCreateButtonListener(view);
+        setLogoutButtonListener(view);
 
+    }
+
+    private void setCaptureButtonListener(View view) {
+        //Runs the function to launch the camera after the capture button is pressed
         captureImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchCamera();
             }
         });
+    }
 
 
+    private void setCreateButtonListener(View view){
         //Finds the create post button and sets a listener
-
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String description = descriptionInput.getText().toString();
                 final ParseUser user = ParseUser.getCurrentUser();
 
-                //    final File file = new File(imagePath);
-                //  final  ParseFile parseFile = new ParseFile(file);
-
-                //Ensures that a photo file is present
-                if (photoFile == null || postImageIv.getDrawable() == null){
-                    Log.e(TAG, "No photo to submit");
-                    Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                createPost(description, /*parseFile, */user, photoFile);
+                photoFileErrorCheck();
+                createPost(description, user, photoFile);
             }
 
         });
+    }
 
+    private void photoFileErrorCheck() {
+        //Ensures that a photo file is present
+        if (photoFile == null || postImageIv.getDrawable() == null){
+            Log.e(TAG, "No photo to submit");
+            Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+
+    private void setLogoutButtonListener(View view){
         //Finds the logout button and sets a listener
         logoutBtn = view.findViewById(R.id.btLogout);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
-                //TODO set a logout message here
                 openLogin();
 
             }
 
         });
     }
-
-
 
 
     private void launchCamera() {
@@ -169,42 +178,37 @@ public class ComposeFragment extends Fragment {
 
         // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
         return file;
     }
 
 
-    private void createPost(String description, /*ParseFile imagefile, */ParseUser user, File photoFile){
+    private void createPost(String description, ParseUser user, File photoFile){
+
+        //Creates the new post object to be added to the Parse server
         final Post newPost = new Post();
         newPost.setDescription(description);
         newPost.setImage(new ParseFile(photoFile));
         newPost.setUser(user);
 
+        //Saves the new post to the server and does error checking
         newPost.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null){
-                    Log.d("HomeActivity", "Create post success!");
+                    Log.d(TAG, "Create post success!");
+                    Toast.makeText(getContext(), "Posted to Instagram!", Toast.LENGTH_SHORT).show();
                     descriptionInput.setText("");
                     postImageIv.setImageResource(0);
-                    // openLogin();
                 }else{
-                    Log.e("HomeActivity", "Create post failure");
-                    e.printStackTrace(); //TODO do a log.e
+                    Toast.makeText(getContext(), "Failed to create post.", Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", "Create post failure");
+                    e.printStackTrace();
                 }
             }
         });
     }
 
 
-    // Menu icons are inflated just as they were with actionbar //TODO add stuff to toolbar
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ig_timeline, menu);
-        return true;
-    }
-*/
 
     private void openLogin(){
         //takes the user to the login page
