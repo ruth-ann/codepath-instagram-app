@@ -34,7 +34,7 @@ public class ProfileFragment extends Fragment {
     protected SwipeRefreshLayout swipeContainer;
 
 
-    public static final String TAG = "PostFragment";
+    public static final String TAG = "ProfileFragment";
     private RecyclerView postsRv;
     protected ArrayList<Post> mPosts;
     protected PostAdapter postAdapter;
@@ -94,17 +94,6 @@ public class ProfileFragment extends Fragment {
 
         //set the username
         usernameTv = view.findViewById(R.id.etUsernameProfile);
-       /* usernameTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openProfilePicActivity = new Intent(getContext(), ProfilePictureActivity.class);
-                startActivity(openProfilePicActivity);
-
-
-            }
-
-        });*/
-
 
         usernameTv.setText(username);
         // Lookup the swipe container view
@@ -113,8 +102,8 @@ public class ProfileFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
+                // Code to refresh the list here.
+                // Call to swipeContainer.setRefreshing(false) is done
                 // once the network request has completed successfully.
                 queryPosts();
             }

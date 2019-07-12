@@ -16,7 +16,7 @@ import java.util.Date;
 //ensures that any logic around accessing and mutating the Parse user
 //object is handled here
 
-//@Parcel
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
     private static String KEY_DESCRIPTION = "description";
@@ -32,7 +32,6 @@ public class Post extends ParseObject {
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
     }
-
     public void setDescription(String description){
         put(KEY_DESCRIPTION, description);
     }
@@ -41,15 +40,14 @@ public class Post extends ParseObject {
     public ParseFile getImage(){ //ParseFile is a class in the SDK that allows us to easily access images
         return getParseFile(KEY_IMAGE);
     }
-
     public void setImage(ParseFile image){
         put(KEY_IMAGE, image);
     }
+
     //user
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
-
     public void setUser(ParseUser user){
         put(KEY_USER, user);
     }
@@ -60,24 +58,22 @@ public class Post extends ParseObject {
     }
 
 
-
+    //modifying and accessing like
     public JSONArray getLikedBy() {
-        JSONArray array = getJSONArray(KEY_LIKED_BY);
-        if (array == null){
+        JSONArray likedArray = getJSONArray(KEY_LIKED_BY);
+
+        if (likedArray == null){
             return new JSONArray();
         }else{
-            return array;
+            return likedArray;
         }
-
     }
 
-
     public boolean isLiked() {
-
-        JSONArray array = getLikedBy();
-        for (int i = 0; i < array.length(); i++){
+        JSONArray likedArray = getLikedBy();
+        for (int i = 0; i < likedArray.length(); i++){
             try{
-                if (array.getJSONObject(i).getString("objectId").equals(ParseUser.getCurrentUser().getObjectId())){
+                if (likedArray.getJSONObject(i).getString("objectId").equals(ParseUser.getCurrentUser().getObjectId())){
                     return true;
                 }
             }catch (JSONException e){
@@ -85,21 +81,18 @@ public class Post extends ParseObject {
             }
         }
         return false;
-
     }
 
     public void like() {
         ParseUser user = ParseUser.getCurrentUser();
         add(KEY_LIKED_BY, user);
-
     }
 
     public void unlike() {
-
         ParseUser user = ParseUser.getCurrentUser();
-        ArrayList<ParseUser> users = new ArrayList<>();
-        users.add(user);
-        removeAll(KEY_LIKED_BY, users); //removes anything inside our array
+        ArrayList<ParseUser> unlikedArray = new ArrayList<>();
+        unlikedArray.add(user);
+        removeAll(KEY_LIKED_BY, unlikedArray); //removes any user inside this array from the likedBy array on the server
     }
 
     public int getNumLikes() {
@@ -144,6 +137,5 @@ public class Post extends ParseObject {
         }
 
     }
-
 
 }
