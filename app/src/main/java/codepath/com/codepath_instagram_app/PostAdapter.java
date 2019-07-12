@@ -32,15 +32,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     //for each row, inflate the layout and cache references into the ViewHolder
-
-
     //called when new rows are created
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View postView = inflater.inflate(R.layout.item_post, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(postView);
         return viewHolder;
     }
@@ -53,10 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = mPosts.get(position);
         //populate the views according to this data
         holder.bind(post);
-
-
     }
-
 
     //gets the number of items
     @Override
@@ -65,7 +58,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     //create ViewHolder class
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageIv;
         public ImageView profilePicIv;
@@ -79,7 +71,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
+            findAllViews();
 
+            //itemView's onClickListener
+            itemView.setOnClickListener(this);
+        }
+
+        private void findAllViews() {
             //perform findViewById lookups by id in the xml file
             imageIv = (ImageView) itemView.findViewById(R.id.ivImage);
             profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
@@ -90,12 +88,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             commentsTv = (TextView) itemView.findViewById(R.id.etComment);
             likeBtn = (ImageButton) itemView.findViewById(R.id.btLike);
             commentBtn = (ImageButton) itemView.findViewById(R.id.btComment);
-
-
-            //itemView's onClickListener
-            itemView.setOnClickListener(this);
-
-
         }
 
         @Override
@@ -118,53 +110,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public void bind(final Post post) {
 
-            descriptionTv.setText(post.getDescription());
-            usernameTv.setText(post.getUser().getUsername());
-            descUsernameTv.setText(post.getUser().getUsername());
-            likesTv.setText(Integer.toString(post.getNumLikes()));
-            ParseFile image = post.getImage();
-            if (image != null) {
-                Glide.with(context).load(image.getUrl())/*.transform(new CircleTransform(context))*/.into(imageIv);
-            }
-            ParseFile profilePhoto = post.getUser().getParseFile("profilePicture");
-            if (profilePhoto != null) {
-                Glide.with(context).load(profilePhoto.getUrl()).into(profilePicIv);
-            }
-
-
-            if (post.isLiked()){
-                likeBtn.setImageResource(R.drawable.ufi_heart_active);
-                likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
-            }else{
-                likeBtn.setImageResource(R.drawable.ufi_heart);
-                likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
-            }
-            likeBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-
-                    if (!post.isLiked()){
-                        //liked
-                        post.like();
-                        likeBtn.setImageResource(R.drawable.ufi_heart_active);
-                        likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
-
-
-                    }else{
-                        post.unlike();
-                        likeBtn.setImageResource(R.drawable.ufi_heart);
-                        likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
-                    }
-
-                    post.saveInBackground();
-
-                    likesTv.setText(Integer.toString(post.getNumLikes()));
-
-                }
-            });
-
-
-
+            setAllViews(post);
+            manageLikes(post);
+            //TODO keep or remove
             commentBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -174,21 +122,65 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         }
 
+        private void manageLikes(final Post post) {
+            //initially sets the post to like view if it has been liked
+            if (post.isLiked()){
+                setLiked();
+            }else{
+                //else initially set to unlike view
+                setUnliked();
+            }
+            setLikeListener(post);
+        }
 
-    }
+        private void setLikeListener(final Post post) {
+            likeBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+
+                    if (!post.isLiked()){
+                        //liked
+                        post.like();
+                        setLiked();
+                    }else{
+                        //already liked
+                        post.unlike();
+                        setUnliked();
+                    }
+                    post.saveInBackground();
+                    likesTv.setText(Integer.toString(post.getNumLikes()));
+
+                }
+            });
+        }
 
 
-    // Clean all elements of the recycler
-    public void clear() {
-        mPosts.clear();
-        notifyDataSetChanged();
-    }
+        private void setAllViews(Post post) {
 
+            descriptionTv.setText(post.getDescription());
+            usernameTv.setText(post.getUser().getUsername());
+            descUsernameTv.setText(post.getUser().getUsername());
+            likesTv.setText(Integer.toString(post.getNumLikes()));
 
-    // Add a list of items -- change to type used
-    public void addAll(List<Post> list) {
-        mPosts.addAll(list);
-        notifyDataSetChanged();
+            ParseFile image = post.getImage();
+            if (image != null) {
+                Glide.with(context).load(image.getUrl())/*.transform(new CircleTransform(context))*/.into(imageIv);
+            }
+            ParseFile profilePhoto = post.getUser().getParseFile("profilePicture");
+            if (profilePhoto != null) {
+                Glide.with(context).load(profilePhoto.getUrl()).into(profilePicIv);
+            }
+
+        }
+        private void setUnliked() {
+            likeBtn.setImageResource(R.drawable.ufi_heart);
+            likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
+        }
+
+        private void setLiked() {
+            likeBtn.setImageResource(R.drawable.ufi_heart_active);
+            likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
+        }
     }
 
 
