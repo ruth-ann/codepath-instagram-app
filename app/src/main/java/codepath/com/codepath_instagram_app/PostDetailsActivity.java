@@ -34,29 +34,34 @@ public class PostDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
 
+        findAllViews();
+        setAllViews();
+
+
+
+    }
+
+    private void setAllViews() {
         //Unwraps the post passed via the intent
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-
-        //Binds the views to the elements in the xml file
-        usernameEt = (TextView) findViewById(R.id.etUsernameProfile);
-        descriptionEt = (TextView) findViewById(R.id.etDescription);
-        createdAtEt = (TextView) findViewById(R.id.etCreatedAt);
-        imageIv = (ImageView) findViewById(R.id.ivImage);
-
         usernameEt.setText(post.getUser().getUsername());
         descriptionEt.setText(post.getDescription());
         String rawDate = post.getCreatedAt().toString();
-        String relativeDate = getRelativeTimeAgo(rawDate);
-        createdAtEt.setText(getRelativeTimeAgo(rawDate)); //TODO format date
-       // createdAtEt.setText(format(post.getCreatedAt()));
+        createdAtEt.setText(getRelativeTimeAgo(rawDate));
         ParseFile image = post.getImage();
         if (image != null){
             Glide.with(this).load(image.getUrl()).into(imageIv);
         }
 
 
+    }
 
-
+    private void findAllViews() {
+        //Binds the views to the elements in the xml file
+        usernameEt = (TextView) findViewById(R.id.etUsernameProfile);
+        descriptionEt = (TextView) findViewById(R.id.etDescription);
+        createdAtEt = (TextView) findViewById(R.id.etCreatedAt);
+        imageIv = (ImageView) findViewById(R.id.ivImage);
     }
 
     public static String getRelativeTimeAgo(String rawJsonDate) {
