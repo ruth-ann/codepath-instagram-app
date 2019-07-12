@@ -61,12 +61,7 @@ public class ComposeFragment extends Fragment {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        //Finds the views by id
-        descriptionInput = view.findViewById(R.id.etDescription);
-        postImageIv = view.findViewById(R.id.ivProfilePicture);
-        captureImageBtn = view.findViewById(R.id.btTakePhoto);
-        createBtn = view.findViewById(R.id.btUploadProfilePic);
+        findAllViews(view);
 
         //sets listeners for each of the relevant buttons
         setCaptureButtonListener(view);
@@ -74,6 +69,15 @@ public class ComposeFragment extends Fragment {
         setLogoutButtonListener(view);
 
     }
+
+    private void findAllViews(View view) {
+        //Finds the views by id
+        descriptionInput = view.findViewById(R.id.etDescription);
+        postImageIv = view.findViewById(R.id.ivProfilePicture);
+        captureImageBtn = view.findViewById(R.id.btTakePhoto);
+        createBtn = view.findViewById(R.id.btUploadProfilePic);
+    }
+
 
     private void setCaptureButtonListener(View view) {
         //Runs the function to launch the camera after the capture button is pressed

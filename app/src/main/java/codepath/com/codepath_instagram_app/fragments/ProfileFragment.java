@@ -52,50 +52,65 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //find the RecyclerView
-        postsRv = (RecyclerView) view.findViewById(R.id.rvPosts);
-        //init the arraylist (data source)
-        mPosts = new ArrayList<>();
-        //construct the adapter from this datasource
-        postAdapter = new PostAdapter(mPosts, getContext());
-        //RecyclerView setup (layout manager, use adapter)
-        postsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        //set the adapter
-        postsRv.setAdapter(postAdapter);
+        findAllViews(view);
+        connectRecyclerView(view);
+        setHeader();
+        setUpSwipeContainer(view);
+        setProfilePictureListener();
+        queryPosts();
+    }
 
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        ParseFile profilePicture = currentUser.getParseFile("profilePicture"); //TODO figure out why this is null
-
-        String username = currentUser.getString("username");
-        currentUser.get("profilePicture");
-
+    private void findAllViews(View view) {
+        //finds views by id
         profilePictureIv = view.findViewById(R.id.ivProfilePictureProfile);
+        usernameTv = view.findViewById(R.id.etUsernameProfile);
+    }
 
+    private void setHeader() {
+        //gets the profile picture of the user and their username and adds it to the header on the profile page
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        setUsername(currentUser);
+        setProfilePicture(currentUser);
+    }
 
+    private void setUsername(ParseUser currentUser) {
+        String username = currentUser.getString("username");
+        //set the username on the profile page
+        usernameTv.setText(username);
+    }
+
+    private void setProfilePicture(ParseUser currentUser) {
+
+        //runs a query on the currently logged in user
         final ParseQuery<ParseUser> userQuery = new ParseQuery<ParseUser>(ParseUser.class);
         userQuery.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
-        //uses methods defined in Post model to get the top 20 posts
 
-        //gets the posts stored in the database on a background thread
+        //gets the query information on a background thread
         userQuery.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> users, ParseException e) {
-                ParseFile p = users.get(0).getParseFile("profilePicture");
 
-                if (p != null) {
+            @Override
+            public void done(List<ParseUser> singletonUserList, ParseException e) {
+                ParseFile profilePicture = singletonUserList.get(0).getParseFile("profilePicture");
+                if (profilePicture != null) {
                     // set profile picture
-                    Glide.with(getContext()).load(p.getUrl()).into(profilePictureIv);
+                    Glide.with(getContext()).load(profilePicture.getUrl()).into(profilePictureIv);
                 }
             }
         });
 
+    }
 
-        //set the username
-        usernameTv = view.findViewById(R.id.etUsernameProfile);
+    private void setProfilePictureListener() {
+        profilePictureIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchUpdateProfilePic();
+            }
+        });
+    }
 
-        usernameTv.setText(username);
+
+    private void setUpSwipeContainer(View view) {
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -108,29 +123,30 @@ public class ProfileFragment extends Fragment {
                 queryPosts();
             }
         });
+        configureRefreshingColors();
+
+    }
+
+    private void configureRefreshingColors() {
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-
-        profilePictureIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openProfilePicActivity = new Intent(getContext(), ProfilePictureActivity.class);
-                Toast.makeText(getContext(), "hi", Toast.LENGTH_LONG).show();
-                startActivity(openProfilePicActivity);
-
-
-            }
-
-        });
-
-        queryPosts();
     }
 
-
+    private void connectRecyclerView(View view) {
+        //find the RecyclerView
+        postsRv = (RecyclerView) view.findViewById(R.id.rvPosts);
+        //init the arraylist (data source)
+        mPosts = new ArrayList<>();
+        //construct the adapter from this datasource
+        postAdapter = new PostAdapter(mPosts, getContext());
+        //RecyclerView setup (layout manager, use adapter)
+        postsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        //set the adapter
+        postsRv.setAdapter(postAdapter);
+    }
 
 
     protected void queryPosts(){
@@ -143,19 +159,22 @@ public class ProfileFragment extends Fragment {
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error with query");
-                    e.printStackTrace();
-                    swipeContainer.setRefreshing(false);
-                    return;
-                }
-
-                mPosts.addAll(posts);
-                postAdapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
-
+                updateData(posts, e);
             }
         });
+    }
+
+    private void updateData(List<Post> posts, ParseException e) {
+        if (e != null) {
+            Log.e(TAG, "Error with query");
+            Toast.makeText(getContext(), "Error loading posts", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            swipeContainer.setRefreshing(false);
+            return;
+        }
+        mPosts.addAll(posts);
+        postAdapter.notifyDataSetChanged();
+        swipeContainer.setRefreshing(false);
     }
 
 
@@ -163,6 +182,4 @@ public class ProfileFragment extends Fragment {
         Intent openProfilePicActivity = new Intent(getContext(), ProfilePictureActivity.class);
         startActivity(openProfilePicActivity);
     }
-
-
 }
