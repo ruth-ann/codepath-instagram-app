@@ -76,6 +76,7 @@ public class PostsFragment extends Fragment {
     }
 
 
+
     protected void queryPosts(){
         final Post.Query postsQuery = new Post.Query();
         //uses methods defined in Post model to get the top 20 posts

@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btCreate" />
+        app:layout_constraintTop_toBottomOf="@+id/btUploadProfilePic" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -34,14 +34,14 @@
         android:ems="10"
         android:hint="enter a description"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/btCreate"
+        app:layout_constraintBottom_toTopOf="@+id/btUploadProfilePic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btTakePhoto" />
 
     <Button
-        android:id="@+id/btCreate"
+        android:id="@+id/btUploadProfilePic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,10 +70,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
+        app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture" />
 
     <ImageView
-        android:id="@+id/ivPostImage"
+        android:id="@+id/ivProfilePicture"
         android:layout_width="151dp"
         android:layout_height="119dp"
         android:layout_marginStart="8dp"

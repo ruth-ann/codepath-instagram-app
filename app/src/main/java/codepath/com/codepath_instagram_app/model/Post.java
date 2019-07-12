@@ -6,6 +6,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -19,6 +23,7 @@ public class Post extends ParseObject {
     private static String KEY_IMAGE = "image";
     private static String KEY_USER = "user";
     private static String KEY_CREATED_AT = "createdAt";
+    private static String KEY_LIKED_BY = "likedBy";
 
 
 
@@ -54,6 +59,53 @@ public class Post extends ParseObject {
         return getCreatedAt();
     }
 
+
+
+    public JSONArray getLikedBy() {
+        JSONArray array = getJSONArray(KEY_LIKED_BY);
+        if (array == null){
+            return new JSONArray();
+        }else{
+            return array;
+        }
+
+    }
+
+
+    public boolean isLiked() {
+
+        JSONArray array = getLikedBy();
+        for (int i = 0; i < array.length(); i++){
+            try{
+                if (array.getJSONObject(i).getString("objectId").equals(ParseUser.getCurrentUser().getObjectId())){
+                    return true;
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        return false;
+
+    }
+
+    public void like() {
+        ParseUser user = ParseUser.getCurrentUser();
+        add(KEY_LIKED_BY, user);
+
+    }
+
+    public void unlike() {
+
+        ParseUser user = ParseUser.getCurrentUser();
+        ArrayList<ParseUser> users = new ArrayList<>();
+        users.add(user);
+        removeAll(KEY_LIKED_BY, users); //removes anything inside our array
+    }
+
+    public int getNumLikes() {
+        return getLikedBy().length();
+
+    }
 
 
     //query of a post class

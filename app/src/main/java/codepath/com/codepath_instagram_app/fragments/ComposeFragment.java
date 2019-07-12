@@ -64,9 +64,9 @@ public class ComposeFragment extends Fragment {
 
         //Finds the views by id
         descriptionInput = view.findViewById(R.id.etDescription);
-        postImageIv = view.findViewById(R.id.ivPostImage);
+        postImageIv = view.findViewById(R.id.ivProfilePicture);
         captureImageBtn = view.findViewById(R.id.btTakePhoto);
-        createBtn = view.findViewById(R.id.btCreate);
+        createBtn = view.findViewById(R.id.btUploadProfilePic);
 
         //Runs the function to launch the camera after the capture button is pressed
 

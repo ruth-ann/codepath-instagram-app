@@ -2,10 +2,12 @@ package codepath.com.codepath_instagram_app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +72,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView usernameTv;
         public TextView descriptionTv;
         public TextView descUsernameTv;
+        public ImageButton likeBtn;
+        public ImageButton commentBtn;
+        public TextView likesTv;
+        public TextView commentsTv;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +86,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             usernameTv = (TextView) itemView.findViewById(R.id.etHandle);
             descriptionTv = (TextView) itemView.findViewById(R.id.etDescription);
             descUsernameTv = (TextView) itemView.findViewById(R.id.etDescriptionHandle); //TODO fix et versus tv
+            likesTv = (TextView) itemView.findViewById(R.id.etLike);
+            commentsTv = (TextView) itemView.findViewById(R.id.etComment);
+            likeBtn = (ImageButton) itemView.findViewById(R.id.btLike);
+
+            commentBtn = (ImageButton) itemView.findViewById(R.id.btComment);
+
+
             //itemView's onClickListener
             itemView.setOnClickListener(this);
 
@@ -104,11 +117,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         }
 
-        public void bind(Post post) {
+        public void bind(final Post post) {
 
             descriptionTv.setText(post.getDescription());
             usernameTv.setText(post.getUser().getUsername());
             descUsernameTv.setText(post.getUser().getUsername());
+            likesTv.setText(Integer.toString(post.getNumLikes()));
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(image.getUrl())/*.transform(new CircleTransform(context))*/.into(imageIv);
@@ -117,6 +131,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             if (profilePhoto != null) {
                 Glide.with(context).load(profilePhoto.getUrl()).into(profilePicIv);
             }
+
+
+            if (post.isLiked()){
+                likeBtn.setImageResource(R.drawable.ufi_heart_active);
+                likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
+            }else{
+                likeBtn.setImageResource(R.drawable.ufi_heart);
+                likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
+            }
+            likeBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+
+                    if (!post.isLiked()){
+                        //liked
+                        post.like();
+                        likeBtn.setImageResource(R.drawable.ufi_heart_active);
+                        likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
+
+
+                    }else{
+                        post.unlike();
+                        likeBtn.setImageResource(R.drawable.ufi_heart);
+                        likeBtn.setColorFilter(Color.argb(255, 0, 0, 0));
+                    }
+
+                    post.saveInBackground();
+
+                    likesTv.setText(Integer.toString(post.getNumLikes()));
+
+                }
+            });
+
+
+
+            commentBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+
+                }
+            });
 
         }
 

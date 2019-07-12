@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp">
 
@@ -13,7 +13,7 @@
         android:layout_height="300dp"
         android:layout_marginBottom="16dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/ivLike"
+        app:layout_constraintBottom_toTopOf="@+id/btLike"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,74 +62,74 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/etDescriptionHandle"
         app:layout_constraintTop_toBottomOf="@+id/etDescriptionHandle" />
 
-    <ImageView
-        android:id="@+id/ivLike"
+    <ImageButton
+        android:id="@+id/btLike"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:background="#FFFFFF"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
-        app:layout_constraintEnd_toStartOf="@+id/ivComment"
+        app:layout_constraintEnd_toStartOf="@+id/etLike"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivImage"
         app:srcCompat="@drawable/ufi_heart" />
 
-    <ImageView
-        android:id="@+id/ivComment"
+    <ImageButton
+        android:id="@+id/btComment"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:background="#FFFFFF"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
-        app:layout_constraintEnd_toStartOf="@+id/ivShare"
+        app:layout_constraintEnd_toStartOf="@+id/etComment"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivLike"
+        app:layout_constraintStart_toEndOf="@+id/etLike"
         app:layout_constraintTop_toBottomOf="@+id/ivImage"
-        app:layout_constraintVertical_bias="0.681"
+        app:layout_constraintVertical_bias="0.548"
         app:srcCompat="@drawable/ufi_comment" />
 
     <ImageView
         android:id="@+id/ivShare"
         android:layout_width="28dp"
         android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
         app:layout_constraintEnd_toStartOf="@+id/ivSave"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ivComment"
+        app:layout_constraintStart_toEndOf="@+id/etComment"
         app:layout_constraintTop_toBottomOf="@+id/ivImage"
-        app:layout_constraintVertical_bias="0.681"
+        app:layout_constraintVertical_bias="0.548"
         app:srcCompat="@drawable/direct" />
 
     <ImageView
         android:id="@+id/ivSave"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginLeft="160dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginLeft="128dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ivShare"
         app:layout_constraintTop_toBottomOf="@+id/ivImage"
-        app:layout_constraintVertical_bias="0.681"
+        app:layout_constraintVertical_bias="0.56"
         app:srcCompat="@drawable/ufi_save" />
 
     <TextView
@@ -146,6 +146,35 @@
         app:layout_constraintBottom_toTopOf="@+id/etDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/ivLike"
-        app:layout_constraintTop_toBottomOf="@+id/ivLike" />
+        app:layout_constraintStart_toStartOf="@+id/btLike"
+        app:layout_constraintTop_toBottomOf="@+id/btLike" />
+
+    <TextView
+        android:id="@+id/etLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="52dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toStartOf="@+id/btComment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btLike"
+        app:layout_constraintTop_toTopOf="@+id/btLike"
+        app:layout_constraintVertical_bias="0.428" />
+
+    <TextView
+        android:id="@+id/etComment"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etDescriptionHandle"
+        app:layout_constraintEnd_toStartOf="@+id/ivShare"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btComment"
+        app:layout_constraintTop_toBottomOf="@+id/ivImage" />
 </android.support.constraint.ConstraintLayout>
