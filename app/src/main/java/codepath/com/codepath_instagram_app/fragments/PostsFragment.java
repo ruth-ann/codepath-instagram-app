@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -23,8 +24,6 @@ import codepath.com.codepath_instagram_app.model.Post;
 public class PostsFragment extends Fragment {
 
     protected SwipeRefreshLayout swipeContainer;
-
-
     public static final String TAG = "PostFragment";
     private RecyclerView postsRv;
     protected ArrayList<Post> mPosts;
@@ -41,19 +40,12 @@ public class PostsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //find the RecyclerView
-        postsRv = (RecyclerView) view.findViewById(R.id.rvPosts);
-        //init the arraylist (data source)
-        mPosts = new ArrayList<>();
-        //construct the adapter from this datasource
-        postAdapter = new PostAdapter(mPosts, getContext());
-        //RecyclerView setup (layout manager, use adapter)
-        postsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        //set the adapter
-        postsRv.setAdapter(postAdapter);
+        connectRecyclerView(view);
+        setUpSwipeContainer(view);
+        queryPosts();
+    }
 
-
-
+    private void setUpSwipeContainer(View view) {
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -66,43 +58,62 @@ public class PostsFragment extends Fragment {
                 queryPosts();
             }
         });
+        configureRefreshingColors();
+
+    }
+
+    private void configureRefreshingColors() {
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-        queryPosts();
     }
 
+
+    private void connectRecyclerView(View view) {
+        //find the RecyclerView
+        postsRv = (RecyclerView) view.findViewById(R.id.rvPosts);
+        //init the arraylist (data source)
+        mPosts = new ArrayList<>();
+        //construct the adapter from this datasource
+        postAdapter = new PostAdapter(mPosts, getContext());
+        //RecyclerView setup (layout manager, use adapter)
+        postsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        //set the adapter
+        postsRv.setAdapter(postAdapter);
+    }
 
 
     protected void queryPosts(){
         final Post.Query postsQuery = new Post.Query();
         //uses methods defined in Post model to get the top 20 posts
         postsQuery.getTop(20).withUser().sortDescending();
-     //TODO make better
 
         //gets the posts stored in the database on a background thread
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error with query");
-                    e.printStackTrace();
-                    swipeContainer.setRefreshing(false);
-                    return;
-                }
-
-                mPosts.addAll(posts);
-                postAdapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
-
+                updateData(posts, e);
             }
         });
     }
 
+    private void updateData(List<Post> posts, ParseException e) {
+        //error handling for when posts have not loaded
+        if (e != null) {
+            Log.e(TAG, "Error with query");
+            Toast.makeText(getContext(), "Error loading posts", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            swipeContainer.setRefreshing(false);
+            return;
+        }
 
+        //updates the adapter and the post list if posts have successfully loaded
+        mPosts.addAll(posts);
+        postAdapter.notifyDataSetChanged();
+        swipeContainer.setRefreshing(false);
+    }
 
 
 }
