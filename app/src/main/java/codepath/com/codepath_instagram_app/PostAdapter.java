@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import codepath.com.codepath_instagram_app.model.Post;
 
@@ -68,6 +72,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageButton commentBtn;
         public TextView likesTv;
         public TextView commentsTv;
+        public TextView createdAtTv;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -82,6 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             imageIv = (ImageView) itemView.findViewById(R.id.ivImage);
             profilePicIv = (ImageView) itemView.findViewById(R.id.ivProfilePic);
             usernameTv = (TextView) itemView.findViewById(R.id.etHandle);
+            createdAtTv = (TextView) itemView.findViewById(R.id.etCreatedAt);
             descriptionTv = (TextView) itemView.findViewById(R.id.etDescription);
             descUsernameTv = (TextView) itemView.findViewById(R.id.etDescriptionHandle); //TODO fix et versus tv
             likesTv = (TextView) itemView.findViewById(R.id.etLike);
@@ -102,6 +108,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Intent intent = new Intent(context, PostDetailsActivity.class);
                 //serialize the movie using parceler, uses the short name of the movie as a key
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                intent.putExtra("username", post.getUser().getUsername());
                 // show the activity
                 context.startActivity(intent);
             }
@@ -112,14 +119,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
             setAllViews(post);
             manageLikes(post);
-            //TODO keep or remove
-            commentBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-
-                }
-            });
-
         }
 
         private void manageLikes(final Post post) {
@@ -162,6 +161,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             descUsernameTv.setText(post.getUser().getUsername());
             likesTv.setText(Integer.toString(post.getNumLikes()));
 
+            String rawDate = post.getCreatedAt().toString();
+            createdAtTv.setText(getRelativeTimeAgo(rawDate));
+
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(image.getUrl())/*.transform(new CircleTransform(context))*/.into(imageIv);
@@ -181,6 +183,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             likeBtn.setImageResource(R.drawable.ufi_heart_active);
             likeBtn.setColorFilter(Color.argb(255, 255, 0, 0));
         }
+    }
+
+    public static String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 
 

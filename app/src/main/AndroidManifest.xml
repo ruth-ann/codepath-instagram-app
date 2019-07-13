@@ -16,7 +16,8 @@
         <activity android:name=".ProfilePictureActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".PostDetailsActivity" />
+        <activity android:name=".PostDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
