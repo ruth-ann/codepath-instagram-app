@@ -70,6 +70,10 @@ public class ComposeFragment extends Fragment {
 
     }
 
+
+
+
+
     private void findAllViews(View view) {
         //Finds the views by id
         descriptionInput = view.findViewById(R.id.etDescription);
@@ -193,7 +197,6 @@ public class ComposeFragment extends Fragment {
         newPost.setDescription(description);
         newPost.setImage(new ParseFile(photoFile));
         newPost.setUser(user);
-
         //Saves the new post to the server and does error checking
         newPost.saveInBackground(new SaveCallback() {
             @Override
@@ -219,4 +222,5 @@ public class ComposeFragment extends Fragment {
         final Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }
+
 }

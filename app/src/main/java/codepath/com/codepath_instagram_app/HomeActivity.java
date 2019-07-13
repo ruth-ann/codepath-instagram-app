@@ -82,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_ig_timeline, menu);
         return true;
     }
+
+
+
 }
 
 
